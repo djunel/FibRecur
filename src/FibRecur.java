@@ -15,6 +15,7 @@ public class FibRecur {
         static int MAXINPUTSIZE  = (int) Math.pow(1.5,28);
         static int MININPUTSIZE  =  1;
         static int Nums = 45;
+        static long fibResult = 0;
         // static int SIZEINCREMENT =  10000000; // not using this since we are doubling the size each time
 
         static String ResultsFolderPath = "/home/diana/Results/"; // pathname to results folder
@@ -59,7 +60,7 @@ public class FibRecur {
             ThreadCpuStopWatch TrialStopwatch = new ThreadCpuStopWatch(); // for timing an individual trial
 
             //add headers to text file
-            resultsWriter.println("#X(Value)    N(Size)    AverageTime    DoublingRatio"); // # marks a comment in gnuplot data
+            resultsWriter.println("#X(Value)  N(Size)   AverageTime       FibNumber"); // # marks a comment in gnuplot data
             resultsWriter.flush();
 
             /* for each size of input we want to test: in this case starting small and doubling the size each time */
@@ -101,7 +102,7 @@ public class FibRecur {
                     //TrialStopwatch.start(); // *** uncomment this line if timing trials individually
                     /* run the function we're testing on the trial input */
 
-                    long result = Fib(inputSize);
+                    fibResult = Fib(inputSize);
                     //System.out.println(result);
                     // batchElapsedTime = batchElapsedTime + TrialStopwatch.elapsedTime(); // *** uncomment this line if timing trials individually
                 }
@@ -119,7 +120,7 @@ public class FibRecur {
                 x++;
                 int countingbits = countBits(inputSize);
                 /* print data for this size of input */
-                resultsWriter.printf("%12d %12d %15.2f %15.2f \n",inputSize, countingbits, averageTimePerTrialInBatch, doublingTotal); // might as well make the columns look nice
+                resultsWriter.printf("%6d %6d %15.2f %20d \n",inputSize, countingbits, averageTimePerTrialInBatch, fibResult); // might as well make the columns look nice
                 resultsWriter.flush();
                 System.out.println(" ....done.");
             }
@@ -128,7 +129,7 @@ public class FibRecur {
         /*Verify merge sort is working*/
         static void verifyFib(int x){
 
-           System.out.println("Testing..." + x + " = " + Fib(x));
+           //System.out.println("Testing..." + x + " = " + Fib(x));
 
 
         }
