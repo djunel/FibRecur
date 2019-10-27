@@ -11,10 +11,10 @@ public class FibRecur {
         /* define constants */
         static long MAXVALUE =  2000000000;
         static long MINVALUE = -2000000000;
-        static int numberOfTrials = 1;
+        static int numberOfTrials = 50;
         static int MAXINPUTSIZE  = (int) Math.pow(1.5,28);
         static int MININPUTSIZE  =  1;
-        static int Nums = 45;
+        static int Nums = 40;
         static long fibResult = 0;
         // static int SIZEINCREMENT =  10000000; // not using this since we are doubling the size each time
 
@@ -60,13 +60,13 @@ public class FibRecur {
             ThreadCpuStopWatch TrialStopwatch = new ThreadCpuStopWatch(); // for timing an individual trial
 
             //add headers to text file
-            resultsWriter.println("#X(Value)  N(Size)   AverageTime       FibNumber"); // # marks a comment in gnuplot data
+            resultsWriter.println("#X(Value)  N(Size)   AverageTime       FibNumber   NumberOfTrials"); // # marks a comment in gnuplot data
             resultsWriter.flush();
 
             /* for each size of input we want to test: in this case starting small and doubling the size each time */
             for(int inputSize=0;inputSize<=Nums; inputSize++) {
                 verifyFib(inputSize);
-                // progress message...
+        // progress message...
                 System.out.println("Running test for input size "+inputSize+" ... ");
 
                 /* repeat for desired number of trials (for a specific size of input)... */
@@ -118,9 +118,10 @@ public class FibRecur {
 
                 }
                 x++;
+                //function for getting the number of bits input number requires
                 int countingbits = countBits(inputSize);
                 /* print data for this size of input */
-                resultsWriter.printf("%6d %6d %15.2f %20d \n",inputSize, countingbits, averageTimePerTrialInBatch, fibResult); // might as well make the columns look nice
+                resultsWriter.printf("%6d %6d %15.2f %20d %4d\n",inputSize, countingbits, averageTimePerTrialInBatch, fibResult, numberOfTrials); // might as well make the columns look nice
                 resultsWriter.flush();
                 System.out.println(" ....done.");
             }
@@ -136,6 +137,7 @@ public class FibRecur {
 
         public static long Fib(int x){
                 long result = 0;
+                //if x is 0 or 1, result is 1
                 if(x <= 1){
                     result = 1;
                 }
@@ -146,15 +148,20 @@ public class FibRecur {
                 return result;
         }
 
+    //count the number of bits required for current fib number
     static int countBits(int n)
     {
         int count = 0;
+        //if n == 0, count will be 1
         if(n == 0){
             count = 1;
         }
+        //loop while n does not equal 0
         while (n != 0)
         {
+            //each loop add 1 to count
             count++;
+            //shift n to the left by 1
             n >>= 1;
         }
         //System.out.println("number of bits = " + count);
